@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Products</title>
+    <style>
+        /* Basic styling for the product list */
+        .product-list {
+            list-style-type: none; /* Remove bullet points */
+            padding: 0;            /* Remove default padding */
+            margin: 0;             /* Remove default margin */
+            display: flex;         /* Use flexbox for layout */
+            flex-wrap: wrap;       /* Allow items to wrap to next line */
+            gap: 20px;             /* Space between items */
+        }
+
+        /* Styling for each product item */
+        .product-item {
+            border: 1px solid #ddd; /* Light border around each product */
+            padding: 10px;          /* Padding inside each product item */
+            width: 300px;           /* Set a fixed width for each product */
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+        }
+
+        /* Styling for product images */
+        .product-image {
+            max-width: 100%;        /* Ensure the image fits within its container */
+            height: auto;           /* Maintain aspect ratio */
+            display: block;         /* Remove inline spacing */
+            margin: 0 auto;         /* Center the image horizontally */
+        }
+    </style>
+</head>
+<body>
+    <h1>Products</h1>
+    <ul class="product-list">
+        {% for product in products %}
+            <li class="product-item">
+                <h2>{{ product.name }}</h2>
+                <p>{{ product.description }}</p>
+                <p>${{ product.price }}</p>
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image" />
+                <form action="{% url 'add_to_cart' product.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Add to Cart</button>
+                </form>
+            </li>
+        {% empty %}
+            <li>No products available.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'homepage' %}">Back to Homepage</a>
+</body>
+</html>
